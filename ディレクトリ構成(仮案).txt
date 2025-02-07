@@ -1,0 +1,10 @@
+/
+┗ Repository/
+  ┗ project/
+  ┗ venvdjango/
+  ┗ git.ignore
+
+↑こんな感じの階層構造でどすかね。
+
+
+
