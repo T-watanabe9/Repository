@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.views.generic       import ListView
+from django.views.generic.base  import TemplateView
 
 # Create your views here.
 
 # ホーム画面
-class HomeView(ListView):
+class HomeView(TemplateView):
      template_name = "home.html"
     #  model = Comment
      

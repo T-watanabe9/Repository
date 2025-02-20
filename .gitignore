@@ -1,3 +1,5 @@
 venvdjango/
 
-__pycache__/
+__pycache__
+
+pro_safe_eyes/__pycache__/
