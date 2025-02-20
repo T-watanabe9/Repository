@@ -1,1 +1,24 @@
-<h6>website.</h6>
+{% extends "base.html" %}
+
+
+{% block title %}コメント新規作成画面{% endblock %}
+
+
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        
+        {{form.as_p}}
+        
+        {% comment %}
+        <br>
+        <a href="{% url '' %}">戻る</a>
+        {% endcomment %}
+
+        <button>登録</button>
+
+    </form>
+
+{% endblock %}
