@@ -13,16 +13,22 @@
 
         <!-- ログイン済ユーザー -->
         {% if request.user.is_authenticated %}        
+
             <span>ようこそ{{user.get_username}}</span><br>
             
+            <!-- ログアウトボタン -->
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button>ログアウト</button>
+            </form>
          
-
             
         <!-- 未ログインユーザー -->
         {% else %}
-            <a>！！未ログインユーザーです！！</a>
+            <a>未ログイン状態。ログインしてください。</a>
         {% endif %}
         <br>
+
 
     </header>
     {% block content %}
