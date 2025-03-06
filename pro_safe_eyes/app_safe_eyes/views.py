@@ -40,7 +40,7 @@ class HomeView(LoginRequiredMixin , TemplateView):
 # コメント画面。
 class CommentListView(LoginRequiredMixin , ListView):
      # template_name = "comment.html"
-     template_name = "models\comment_list.html"
+     template_name = "models/comment_list.html"
      model = Comment
      # paginate_by = 5
 
