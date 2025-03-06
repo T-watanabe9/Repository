@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+
+{% block title %}コメントリスト画面{% endblock %}
+
+
+{% block content %}
+
+   <h6>コメントリスト画面</h6>
+      
+   <br>
+   <div>
+      <table border="1">
+         <!-- すべてのオブジェクトに対して繰り返し -->
+         <tr>
+               <td>投稿時刻</td>
+         
+               <td>コメントの内容</td>
+               <td>編集、削除</td>
+         </tr>
+         {% for comment in object_list %}
+         <tr>
+               <td>{{ comment.datetime }}</td>
+               
+               <td>{{ comment.content }} </td>
+
+               
+   <script>
+      var test = "{{ comment.content }}";  // Djangoの値を直接埋め込む
+      console.log("Received datetime:", test);
+      
+      console.log("R, testeceived datetime:");
+  </script>
+
+          
+
+               <td>
+                  {% comment %}
+                  <a href="{% url 'comment_update' pk=comment.pk %}">編集</a>
+                  <a href="{% url 'comment_delete' pk=comment.pk %}">削除</a>
+                  {% endcomment %}
+               </td>
+         </tr>
+         {% endfor %}  
+      </table>
+      
+      {% comment %}
+      <a href="{% url 'comment_create' %}">新規作成</a>
+      {% endcomment %}
+
+   </div>
+
+        
+
+
+
+
+{% endblock %}
