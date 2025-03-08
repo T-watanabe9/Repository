@@ -7,20 +7,36 @@
 {% block content %}
 
 
+   <!-- コメント作成フォーム -->
    <form method="post">
+
       {% csrf_token %}
-
-      <!-- <label >タイトル:</label> -->
-
+      
+      <br>
       
       <label >身体の調子:</label>
-      {{form.physical_health}}
-      <!-- →inputを使うよりも、djangoのform.と、modelsからの引数で調整する方が良いっぽい。 -->
+      <div class="d-flex"> 
+         {% for radio in form.physical_health %}
+            <div class="mr-3">
+               {{ radio.tag }}
+               <label>{{ radio.choice_label }}</label>
+            </div>
+         {% endfor %}
+      </div>
 
+      <br>
       
       <label >メンタルの調子:</label>
-      {{form.mental_health}}
-
+      <div class="d-flex"> 
+         {% for radio in form.mental_health %}
+            <div class="mr-3">
+               {{ radio.tag }}
+               <label>{{ radio.choice_label }}</label>
+            </div>
+         {% endfor %}
+      </div>
+      
+      <br>
       
       <label >今日はどんな日？:</label>
       {{form.content}}
@@ -31,8 +47,7 @@
 
    </form>
 
-         
-
+   
 
 
 
