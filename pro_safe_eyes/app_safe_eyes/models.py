@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -18,7 +19,7 @@ class Comment(models.Model):
         (2, "普通"),
         (3, "悪い"),
     ]
-    physical_health = models.IntegerField(choices=CONDITION_CHOICES, default=2) # 身体の調子。
+    physical_health = models.IntegerField(choices=CONDITION_CHOICES, default=2) # 身体の調子。# widget=forms.RadioSelect ,
     mental_health = models.IntegerField(choices=CONDITION_CHOICES, default=2) # メンタルの調子。
      
     # 新規作成・編集完了時のリダイレクト先

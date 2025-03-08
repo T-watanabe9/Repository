@@ -1,21 +1,24 @@
 from typing                     import Any
+from django.urls import reverse_lazy
+from django.forms import BaseModelForm
 from django.shortcuts           import render , redirect
 from django.views.generic.base  import TemplateView
 from django.views.generic       import ListView
+from django.views.generic.edit  import CreateView, UpdateView , DeleteView
 from django.contrib.auth.views  import LoginView , LogoutView
 from django.http                import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models                    import Comment
+from .forms import RadioButtonForm
 
 
 
 # Create your views here.
 
 
-# 未ログインユーザーがURLにアクセスしたときのリダイレクト先
-# 新規登録ボタン
-# ログインフォーム
+# ログイン画面
 # ログアウト時のリダイレクト先
+# 未ログインユーザーがURLにアクセスしたときのリダイレクト先
 class LoginView(LoginView):
      template_name = 'login.html'
      
@@ -30,16 +33,11 @@ class LoginView(LoginView):
 # ホーム画面
 class HomeView(LoginRequiredMixin , TemplateView):
      template_name = "home.html"
-    #  model = Comment
      
-    # クラスベースビューの呼び出し時、クエリセットをログインユーザーのもののみに絞って返す。
-    #  def get_queryset(self):
-    #        current_user = self.request.user
-    #        return Comment.objects.filter(user= current_user) 
 
-# コメント画面。
+
+# コメントリスト画面
 class CommentListView(LoginRequiredMixin , ListView):
-     # template_name = "comment.html"
      template_name = "models/comment_list.html"
      model = Comment
      # paginate_by = 5
@@ -49,16 +47,21 @@ class CommentListView(LoginRequiredMixin , ListView):
            # フロントに渡すクエリセットをログイン済ユーザーのみに絞る。
            user = self.request.user
            return Comment.objects.filter(user= user) 
-     
-     # # ビューが呼び出されたとき：getリクエスト
-     # def get(self, request, *args, **kwargs):
-     #      return super().get(self, request, *args, **kwargs)
-     
-     # # 検索ボタンを押したとき：postリクエスト
-     # def post(self, request, *args, **kwargs):
-     #      # return super().post(self, request, *args, **kwargs)
-     #      print("コメントビュー!post関数!")
-     #      dic = test_search(request)
-     #      print(dic)
-     #      return JsonResponse({'message': 'データが正常に保存されました。'})
 
+
+# コメント作成画面
+class CommentCreateView(LoginRequiredMixin , CreateView):
+     template_name = "models/comment_create.html"
+     model = Comment
+     form_class = RadioButtonForm
+     success_url = reverse_lazy('comment')
+     
+     # フォーム入力時に呼び出し。
+     def form_valid(self, form: BaseModelForm) :
+          # 新規作成フォームにて、userフィールドは必ずログインユーザーとする。
+          form.instance.user = self.request.user
+          return super().form_valid(form)
+     
+
+
+     # fields = ['physical_health' , 'mental_health' , 'content']

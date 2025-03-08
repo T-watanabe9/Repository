@@ -25,4 +25,6 @@ urlpatterns = [
     path('home', views.HomeView.as_view(), name='home'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('comment/', views.CommentListView.as_view(), name='comment'),
+    path('comment/create/', views.CommentCreateView.as_view(), name='comment_create'),
+
 ]

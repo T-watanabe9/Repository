@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+
+{% block title %}コメント登録画面{% endblock %}
+
+
+{% block content %}
+
+
+   <form method="post">
+      {% csrf_token %}
+
+      <!-- <label >タイトル:</label> -->
+
+      
+      <label >身体の調子:</label>
+      {{form.physical_health}}
+      <!-- →inputを使うよりも、djangoのform.と、modelsからの引数で調整する方が良いっぽい。 -->
+
+      
+      <label >メンタルの調子:</label>
+      {{form.mental_health}}
+
+      
+      <label >今日はどんな日？:</label>
+      {{form.content}}
+
+      <br>
+      <a href="{% url 'comment' %}">戻る</a>
+      <button>登録</button>
+
+   </form>
+
+         
+
+
+
+
+{% endblock %}

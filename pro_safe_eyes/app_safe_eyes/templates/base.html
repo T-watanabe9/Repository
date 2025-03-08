@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <header>     
@@ -14,15 +16,29 @@
         <!-- ログイン済ユーザー -->
         {% if request.user.is_authenticated %}        
 
-            <span>ようこそ{{user.get_username}}</span><br>
-            
+            <span>ようこそ{{user.get_username}}</span>
+            <br>
+
             <!-- ログアウトボタン -->
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button>ログアウト</button>
             </form>
+            
+
+            
+            <!-- メニュー -->
+            <a href="{% url 'home' %}">ホーム</a>
+            <a href="{% url 'comment' %}">コメント</a>
+
+            {% comment %}
+            <a href="{% url 'home' %}">相談</a>
+            <a href="{% url 'profile' %}">マイプロフィール</a>
+            {% endcomment %}
          
             
+            
+
         <!-- 未ログインユーザー -->
         {% else %}
             <a>未ログイン状態。ログインしてください。</a>
@@ -31,9 +47,13 @@
 
 
     </header>
+
+    <!-- ページのコンテンツ -->
     {% block content %}
     {% endblock %} 
-    
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 

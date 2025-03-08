@@ -6,33 +6,28 @@
 
 {% block content %}
 
-   <h6>コメントリスト画面</h6>
-      
+
    <br>
+   <br>
+
+   <div>      
+      <a href="{% url 'comment_create' %}">新規作成</a>
+   </div>
+      
    <div>
       <table border="1">
-         <!-- すべてのオブジェクトに対して繰り返し -->
          <tr>
                <td>投稿時刻</td>
-         
                <td>コメントの内容</td>
                <td>編集、削除</td>
          </tr>
+         
+         <!-- すべてのオブジェクトに対して繰り返し -->
          {% for comment in object_list %}
          <tr>
                <td>{{ comment.datetime }}</td>
                
-               <td>{{ comment.content }} </td>
-
-               
-   <script>
-      var test = "{{ comment.content }}";  // Djangoの値を直接埋め込む
-      console.log("Received datetime:", test);
-      
-      console.log("R, testeceived datetime:");
-  </script>
-
-          
+               <td>{{ comment.content }} </td>          
 
                <td>
                   {% comment %}
@@ -42,17 +37,13 @@
                </td>
          </tr>
          {% endfor %}  
+
       </table>
       
-      {% comment %}
-      <a href="{% url 'comment_create' %}">新規作成</a>
-      {% endcomment %}
-
    </div>
 
-        
-
-
-
+   
+   {% comment %}
+   {% endcomment %}
 
 {% endblock %}
