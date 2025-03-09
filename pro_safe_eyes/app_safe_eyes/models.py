@@ -1,4 +1,5 @@
 
+import uuid
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -8,7 +9,8 @@ from django.urls import reverse
 
 # コメントモデル。
 class Comment(models.Model):
-    comment_id = models.BigAutoField(primary_key=True)   # コメントID。主キー。
+    # comment_id = models.BigAutoField(primary_key=True)   # コメントID。主キー。
+    comment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL , on_delete=models.CASCADE) # 外部キー。デフォルトユーザーモデル。
     #category = models.CharField(max_length=255) # コメントカテゴリ。不要かも。
     content = models.TextField(null=True , blank=True) # コメント内容。
