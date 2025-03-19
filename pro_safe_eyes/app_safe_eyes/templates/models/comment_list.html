@@ -65,9 +65,14 @@
             // 選択されているラジオボタンを取得。
             const checkedRadio = document.querySelector('input[name="comment"]:checked');
             
-            // ラジオボタンがnullでなければ、自身にhref属性を付与。
+            // ラジオボタンがnullでなければ、
             if (checkedRadio) {
-               this.setAttribute("href", "{% url 'home' %}");//リンクにpk=comment.pkを代入する。
+               
+               const pk = checkedRadio.value
+               console.log(pk)
+               // ここで、ラジオボタンから該当するuuidを取得したい。
+               // 自身にhref属性を付与。
+               // this.setAttribute("href", "{% url 'update' , 'pk = value' %}");//リンクにpk=comment.pkを代入する。
             }
          };
 
