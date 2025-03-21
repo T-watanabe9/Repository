@@ -51,7 +51,7 @@ class CommentListView(LoginRequiredMixin , ListView):
 
 # コメント作成画面
 class CommentCreateView(LoginRequiredMixin , CreateView):
-     template_name = "models/comment_create.html"
+     # template_name = "models/comment_create.html"
      model = Comment
      form_class = RadioButtonForm
      success_url = reverse_lazy('comment')
