@@ -3,13 +3,13 @@ from django.urls import reverse_lazy
 from django.forms import BaseModelForm
 from django.shortcuts           import render , redirect
 from django.views.generic.base  import TemplateView
-from django.views.generic       import ListView
-from django.views.generic.edit  import CreateView, UpdateView , DeleteView
+from django.views.generic       import ListView , UpdateView
+from django.views.generic.edit  import CreateView , DeleteView
 from django.contrib.auth.views  import LoginView , LogoutView
 from django.http                import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models                    import Comment
-from .forms import RadioButtonForm
+from .forms import CommentCreateForm
 
 
 
@@ -53,15 +53,19 @@ class CommentListView(LoginRequiredMixin , ListView):
 class CommentCreateView(LoginRequiredMixin , CreateView):
      # template_name = "models/comment_create.html"
      model = Comment
-     form_class = RadioButtonForm
+     form_class = CommentCreateForm
      success_url = reverse_lazy('comment')
+     # fields = ['physical_health' , 'mental_health' , 'content']
      
      # フォーム入力時に呼び出し。
      def form_valid(self, form: BaseModelForm) :
           # 新規作成フォームにて、userフィールドは必ずログインユーザーとする。
           form.instance.user = self.request.user
           return super().form_valid(form)
-     
 
 
-     # fields = ['physical_health' , 'mental_health' , 'content']
+# コメント編集画面
+class CommentUpdateView(LoginRequiredMixin , UpdateView):
+     template_name = "models/comment_update.html"
+     model = Comment
+     pass

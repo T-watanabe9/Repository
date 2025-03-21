@@ -2,8 +2,8 @@ from django import forms
 from .models import Comment
 
 
-# コメントフォーム。
-class RadioButtonForm(forms.ModelForm):
+# コメント作成フォーム。
+class CommentCreateForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['physical_health' , 'mental_health' , 'content']
