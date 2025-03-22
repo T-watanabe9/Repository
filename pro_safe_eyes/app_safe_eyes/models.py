@@ -21,6 +21,12 @@ class Comment(models.Model):
     ]
     physical_health = models.IntegerField(choices=CONDITION_CHOICES, default=2) # 身体の調子。# widget=forms.RadioSelect ,
     mental_health = models.IntegerField(choices=CONDITION_CHOICES, default=2) # メンタルの調子。
+    BUSY_CHOICES = [
+        (1, "余裕"),
+        (2, "普通"),
+        (3, "忙しい"),
+    ]
+    busy = models.IntegerField(choices=BUSY_CHOICES, default=2)
      
     # 新規作成・編集完了時のリダイレクト先
     def get_absolute_url(self):

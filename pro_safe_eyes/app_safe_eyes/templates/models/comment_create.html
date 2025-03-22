@@ -20,6 +20,18 @@
       <br>
       <br>
       
+      <label>今日の忙しさ:</label>
+      <div class="d-flex"> 
+         {% for radio in form.busy %}
+            <div class="mr-3">
+               {{ radio.tag }}
+               <label>{{ radio.choice_label }}</label>
+            </div>
+         {% endfor %}
+      </div>
+
+      <br>
+      
       <label >身体の調子:</label>
       <div class="d-flex"> 
          {% for radio in form.physical_health %}
@@ -32,7 +44,7 @@
 
       <br>
       
-      <label >メンタルの調子:</label>
+      <label>メンタルの調子:</label>
       <div class="d-flex"> 
          {% for radio in form.mental_health %}
             <div class="mr-3">
@@ -41,7 +53,7 @@
             </div>
          {% endfor %}
       </div>
-      
+
       <br>
       
       <label >今日はどんな日？:</label>
