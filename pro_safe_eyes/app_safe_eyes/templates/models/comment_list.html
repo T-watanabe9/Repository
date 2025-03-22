@@ -20,7 +20,7 @@
       <a  class="btn btn-primary mymargin" id="comment-update">編集</a>
    </div>
    <div>      
-      <a href="{% url 'home' %}" class="btn btn-primary mymargin ">削除</a>
+      <a  class="btn btn-primary mymargin" id="comment-delete">削除</a>
    </div>
       
    <div>
@@ -31,6 +31,8 @@
                   <td></td>
                   <td>投稿時刻</td>
                   <td>コメントの内容</td>
+                  <td>身体の調子</td>
+                  <td>メンタルの調子</td>
             </tr>
             
             <!-- すべてのオブジェクトに対して繰り返し -->
@@ -38,12 +40,17 @@
             <tr>
                
                   <td>
-                     <input type="radio" name="comment" value="{{comment.pk}}">
+                     <input type="radio" name="comment" value="{{ comment.pk }}">
                   </td>
                
                   <td>{{ comment.datetime }}</td>
                   
-                  <td>{{ comment.content }} </td>          
+                  <td>{{ comment.content }} </td>     
+
+                  <td>{{ comment.get_physical_health_display }}</td>
+                  
+                  <td>{{ comment.get_mental_health_display }} </td>          
+   
    
             </tr>
             {% endfor %}  
@@ -56,28 +63,37 @@
 
    <script>
       (() => {
+    
+        // コメント編集ボタン
+        document.getElementById("comment-update").onclick = function() {
+          setFormURL(this, 'update');
+        };
+    
+        // コメント削除ボタン
+        document.getElementById("comment-delete").onclick = function() {
+          setFormURL(this, 'delete');
+        };
 
-         //コメント編集ボタンの挙動。
-         document.getElementById("comment-update").onclick = function() {
+        
+        // ボタンにフォームURLをセットする関数。
+        const setFormURL = (button, action) => {
+          const checkedRadio = document.querySelector('input[name="comment"]:checked');
+          
+          if (checkedRadio) {
+            // ラジオボタンが選択されていれば、href属性を自身に付与。
+            const pk = checkedRadio.value;
+            button.setAttribute("href", `/comment/${pk}/${action}/`);
+          } else {
+            // 選択されていなければ、メッセージ。
+            console.log('レコードが選択されていません。');
+          }
 
-            console.log("編集ボタンがクリックされた！");
+        };
 
-            // 選択されているラジオボタンを取得。
-            const checkedRadio = document.querySelector('input[name="comment"]:checked');
-            
-            // ラジオボタンがnullでなければ、
-            if (checkedRadio) {
-               
-               const pk = checkedRadio.value
-               console.log(pk)
-               // ここで、ラジオボタンから該当するuuidを取得したい。
-               // 自身にhref属性を付与。
-               // this.setAttribute("href", "{% url 'update' , 'pk = value' %}");//リンクにpk=comment.pkを代入する。
-            }
-         };
+
 
       })();
-   </script>
+    </script>
 
    <style>
       .mymargin {

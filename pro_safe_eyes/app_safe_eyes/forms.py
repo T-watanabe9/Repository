@@ -2,14 +2,15 @@ from django import forms
 from .models import Comment
 
 
-# コメント作成フォーム。
-class CommentCreateForm(forms.ModelForm):
+# コメント用フォーム。
+class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['physical_health' , 'mental_health' , 'content']
+        fields = ['datetime' , 'physical_health' , 'mental_health' , 'content']
         widgets = {
             'physical_health': forms.RadioSelect(),  
             'mental_health': forms.RadioSelect(),  
-            # content のサイズを指定したいとき。
+            'datetime': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+            # ↓content のサイズを指定したいとき。
             # 'content': forms.Textarea(attrs={'rows': 4, 'cols': 40}),  
         }

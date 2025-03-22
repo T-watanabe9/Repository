@@ -1,4 +1,4 @@
-from typing                     import Any
+from typing      import Any
 from django.urls import reverse_lazy
 from django.forms import BaseModelForm
 from django.shortcuts           import render , redirect
@@ -9,12 +9,10 @@ from django.contrib.auth.views  import LoginView , LogoutView
 from django.http                import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models                    import Comment
-from .forms import CommentCreateForm
-
+from .forms import CommentForm
 
 
 # Create your views here.
-
 
 # ログイン画面
 # ログアウト時のリダイレクト先
@@ -49,13 +47,13 @@ class CommentListView(LoginRequiredMixin , ListView):
            return Comment.objects.filter(user= user) 
 
 
-# コメント作成画面
+# コメント登録画面
 class CommentCreateView(LoginRequiredMixin , CreateView):
-     # template_name = "models/comment_create.html"
+     template_name = "models/comment_create.html"
      model = Comment
-     form_class = CommentCreateForm
+     form_class = CommentForm
      success_url = reverse_lazy('comment')
-     # fields = ['physical_health' , 'mental_health' , 'content']
+     
      
      # フォーム入力時に呼び出し。
      def form_valid(self, form: BaseModelForm) :
@@ -68,4 +66,12 @@ class CommentCreateView(LoginRequiredMixin , CreateView):
 class CommentUpdateView(LoginRequiredMixin , UpdateView):
      template_name = "models/comment_update.html"
      model = Comment
+     form_class = CommentForm
+     success_url = reverse_lazy('comment')
+     pass
+
+class CommentDeleteView(LoginRequiredMixin , DeleteView):
+     template_name = 'models/comment_delete.html'
+     model = Comment
+     success_url = reverse_lazy('comment')
      pass

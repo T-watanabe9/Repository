@@ -26,5 +26,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('comment/', views.CommentListView.as_view(), name='comment'),
     path('comment/create/', views.CommentCreateView.as_view(), name='comment_create'),
-
+    path('comment/<uuid:pk>/update/', views.CommentUpdateView.as_view(), name='comment_update'),
+    path('comment/<uuid:pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),
 ]

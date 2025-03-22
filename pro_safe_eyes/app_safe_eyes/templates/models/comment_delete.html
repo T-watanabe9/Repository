@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+
+{% block title %}コメント削除画面{% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- コメント削除フォーム -->
+<form method="post">
+
+    {% csrf_token %}
+        
+    <span>以下のコメントを削除します。</span>
+    <br>
+
+    {{comment.content}}
+
+
+    <br>
+    <a href="{% url 'comment' %}">戻る</a>
+    <button>削除</button>
+    
+</form>
+
+
+
+{% endblock %}
