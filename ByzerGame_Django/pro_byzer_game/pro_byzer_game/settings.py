@@ -25,6 +25,11 @@ SECRET_KEY = 'django-insecure-q@8$^l+@uvqy_#1g1%3bwzhaw*v%sg0np6xi3wt(^e^ha8#e&n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# byzer , you need this property in Django 4.0 .
+CSRF_TRUSTED_ORIGINS = [
+    "https://bizer-smk.com",
+]
+
 ALLOWED_HOSTS = []
 
 
