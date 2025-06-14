@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'pro_byzer_game.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db01',
+        'NAME': 'dbgame',
         'USER': 'work',
         'PASSWORD': 'pass0218',
         'HOST': 'localhost',  # リモートDBの場合はサーバーIP
