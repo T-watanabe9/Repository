@@ -1,4 +1,0 @@
-venvdjango/
-
-__pycache__
-
