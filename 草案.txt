@@ -1,2 +1,83 @@
 〇デッキリストの保存形式はcsvが良いんじゃねえか。流石に。だってカード名のリスト以上の情報は無いわけだし。
 →それか、json化しやすいようにjsonファイルとか。
+
+
+using System.IO;
+using UnityEngine;
+using Newtonsoft.Json;
+
+public class SaveManager : MonoBehaviour
+{
+
+
+
+    private string filePath;
+
+    private void Awake()
+    {
+        filePath = Path.Combine(Application.persistentDataPath, "userdata.json");
+    }
+
+    // データを保存する
+    public void SaveUserData(UserData data)
+    {
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+        File.WriteAllText(filePath, json);
+        Debug.Log($"保存しました: {filePath}");
+    }
+
+    // データを読み込む
+    public UserData LoadUserData()
+    {
+        if (!File.Exists(filePath))
+        {
+            Debug.LogWarning("保存データが存在しません。");
+            return null;
+        }
+
+        string json = File.ReadAllText(filePath);
+        UserData data = JsonConvert.DeserializeObject<UserData>(json);
+        Debug.Log("データを読み込みました。");
+        return data;
+    }
+
+    // テスト用（キー操作）
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            UserData data = new UserData { playerName = "Alice", level = 10, volume = 0.8f };
+            SaveUserData(data);
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            UserData data = LoadUserData();
+            if (data != null)
+            {
+                Debug.Log($"プレイヤー名: {data.playerName}, レベル: {data.level}, 音量: {data.volume}");
+            }
+        }
+    }
+}
+
+
+[System.Serializable]
+public class UserData
+{
+    public string playerName;
+    public int level;
+    public float volume;
+}
+
+
+
+{
+  "decListList":
+  [
+    {"title":"～～" , "main":[] , "extra":[], "memo"}
+
+  ]
+
+}
+
