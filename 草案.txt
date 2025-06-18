@@ -1,5 +1,10 @@
 〇デッキリストの保存形式はcsvが良いんじゃねえか。流石に。だってカード名のリスト以上の情報は無いわけだし。
 →それか、json化しやすいようにjsonファイルとか。
+今日の目標
+
+日記
+
+
 
 
 using System.IO;
@@ -63,21 +68,32 @@ public class SaveManager : MonoBehaviour
 
 
 [System.Serializable]
-public class UserData
+public class DecContainer
 {
-    public string playerName;
-    public int level;
-    public float volume;
+    public List<DecList> decContainer;
 }
+
+public class DecList
+{
+    public String decID;
+    public String decName;
+    public Bool is_original;
+    public List<String> main;
+    public List<String> ex;
+    public String memo;
+}
+
 
 
 
 {
   "decListList":
   [
-    {"title":"～～" , "main":[] , "extra":[], "memo"}
+    {"name":"～～" , "main":[] , "extra":[], "memo":"～" }
 
   ]
 
 }
+
+
 
