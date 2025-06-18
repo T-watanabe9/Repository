@@ -6,25 +6,45 @@
 
 
 
+using Newtonsoft.Json;
+
+public class BuildManager1 : MonoBehaviour
+{
+    public static selectedDecimal;
+    public Transform selectButton;
+    public static List<DecList> decListList;
+
+
+    void Awake()
+    {
+        // →Utility.getDecListList() return List<DecList> とか？
+        dataPath = Path.Combine(Application.persistentDataPath, "userdata.json");
+        decListList = JsonConvert.DeserializeObject<List<TestData>>(json);
+    }
+
+    void Start()
+    {
+        selectButton = Instantiate(this.selectButton)
+        selectButton.gm = this.object;
+        selectButton.name
+
+
+    }
+    
+}
+
 
 using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public class SaveManager : MonoBehaviour
+public class BuildManager2 : MonoBehaviour
 {
 
 
 
-    private string filePath;
-
-    private void Awake()
-    {
-        filePath = Path.Combine(Application.persistentDataPath, "userdata.json");
-    }
-
     // データを保存する
-    public void SaveUserData(UserData data)
+    public void SaveUserData(List<T> data)
     {
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(filePath, json);
@@ -60,19 +80,15 @@ public class SaveManager : MonoBehaviour
             UserData data = LoadUserData();
             if (data != null)
             {
-                Debug.Log($"プレイヤー名: {data.playerName}, レベル: {data.level}, 音量: {data.volume}");
+                Debug.Log($"出力しました。");
             }
         }
     }
 }
 
 
-[System.Serializable]
-public class DecContainer
-{
-    public List<DecList> decContainer;
-}
 
+// デシリアライズ用クラス。
 public class DecList
 {
     public String decID;
@@ -86,14 +102,16 @@ public class DecList
 
 
 
-{
-  "decListList":
-  [
-    {"name":"～～" , "main":[] , "extra":[], "memo":"～" }
+chat先生↓
+newtonsoft.jsonを用いて以下のjsonファイルをデシリアライズするクラスを定義できますか。
 
-  ]
+test.json
+[
 
-}
+ {"title":"title1" , "main":"main1" , "memo":"memo1"},
 
+ {"title":"title1" , "main":"main2" , "memo":"memo2"},
 
+ {"title":"title1" , "main":"main3" , "memo":"memo3"}
 
+]
