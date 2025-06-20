@@ -20,6 +20,7 @@ class Card(models.Model):
     effect_text = models.TextField(blank=True, null=True)
     symbol = models.CharField(max_length=10 ,blank=True, null=True)
     flavor_text = models.TextField(blank=True, null=True)
+    explain = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.id}: {self.name}"
