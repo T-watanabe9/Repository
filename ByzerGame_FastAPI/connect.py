@@ -33,10 +33,14 @@ def get_db():
 
 
 # クエリ関数（例：動的検索）
-def select(session: Session, **kwargs):
+def sql_select(session: Session, **kwargs):
     
     # SQLクエリ文の整形。
     query = session.query(User)
+
+    if (id:= kwargs.get('id'))is not None:
+        query = query.filter(User.id == id)
+        return query.first()
 
     if (text:= kwargs.get('searchText')) is not None:
         query = query.filter(User.name.like(f"%{text}%"))

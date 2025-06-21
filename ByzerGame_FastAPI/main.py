@@ -8,7 +8,7 @@ curl.exe -X POST http://localhost:8080/build/ -H "Content-Type: application/json
 
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request, Depends
-from connect import get_db, select
+from connect import get_db, sql_select
 
 app = FastAPI()
 
@@ -26,9 +26,16 @@ async def get():
 async def post_build(request: Request , session = Depends(get_db)):
     search_condition = await request.json()
     print(search_condition)
-    result = select(session , **search_condition)
+    result = sql_select(session , **search_condition)
     print(result)
-    return  [user.__dict__ for user in result]
+    if result is None:  # データがない場合
+        return None
+    
+    elif isinstance(result, list):  # 複数データあり
+        return [user.__dict__ for user in result]
+    
+    else:  # 単一データ（.first() の戻り値）
+        return result.__dict__
 
 
 # RunSceneのリクエスト。
