@@ -17,6 +17,7 @@ class User(base):
     id = Column(String, primary_key=True)
     name = Column(String)
     cost = Column(Integer)
+    effect_text = Column(String)
 
     def __repr__(self):
         return self.name
