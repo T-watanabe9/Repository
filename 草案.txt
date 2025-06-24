@@ -1,9 +1,14 @@
-Cardモデルの系統部分、ManyToManyfieldってヤツを使うのが良いかもしれない。
+
+〇Cardモデルの系統部分、ManyToManyfieldを使うのが良いと思う。
 以下、chat先生。↓
 https://chatgpt.com/c/6858d0a3-6560-800f-a3e2-acfc28696997
 
+class ModelCards(models.Model):
 
-C#側でSearchConditionをシリアライズするときのコード案。
+class ModelRaces(models.Model):
+
+
+〇C#側でSearchConditionをシリアライズするときのコード案。
 
 
 using Newtonsoft.Json;
@@ -13,7 +18,7 @@ class SearchCondition
 {
    public string id;
    public string name ;
-   public int? age ;
+   public int? age ; // nullを許容するint型。
    public string memo;
 }
 
@@ -23,11 +28,12 @@ var condition = new SearchCondition
 {
     id = "123",
     name = "Taro",
-    age = null, // ここは null OK
+    age = null, // null OK
     memo = "test memo"
 };
 
-//fastapi。
+
+〇fastAPI。select_sqlの返り値を簡単に。
 
 # main.py
 '''
@@ -149,5 +155,3 @@ def sql_select(session, **conditions) -> list[User]:
 
     # query.all()やquery.first()で初めてRDBMSに問い合わせが入る。
     return query.order_by(User.cost).all()
-
-
