@@ -1,3 +1,0 @@
-Cardモデルの系統部分、ManyToManyfieldってヤツを使うのが良いかもしれない。
-以下、chat先生。↓
-https://chatgpt.com/c/6858d0a3-6560-800f-a3e2-acfc28696997
