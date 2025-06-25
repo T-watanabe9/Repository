@@ -132,3 +132,100 @@ def sql_select(session, **conditions) -> list[User]:
 
     # query.all()やquery.first()で初めてRDBMSに問い合わせが入る。
     return query.order_by(User.cost).all()
+
+
+
+〇草案
+
+// Utility.cs でSeachByIDとSearchByConditionを作る。
+// SeachByIDはビルドシーンでもランシーンでもよく使うのでUtility。
+// でSearchByConditionもなんか役割似てるからUtilityで。
+// 以下のコードはちょっと良くないかも。
+// IEnumerator PostRequest：様々なシーンで利用するのでUtilityで定義。各シーンからStartCoroutine(Utiity.PostRequest())で各シーンから呼び出す、とかは？
+
+
+class Utility
+{
+
+   
+   public static IEnumerator PostRequest(string uri, 
+                                         string jsonData, 
+                                         Action<string> callback)
+   {
+        var request = new UnityWebRequest(uri, "POST");
+        byte[] bodyRaw 
+            = new System.Text.UTF8Encoding().GetBytes(jsonData);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        // もしも何かエラーがあれば
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        // もしもエラーが無ければ
+        else
+        {
+            // 呼び出したコルーチンにjson形式の文字列を返す。
+            callback?.Invoke(request.downloadHandler.text);
+        }
+
+
+   } 
+}
+
+
+class BuildManager:MonoBehavior
+{
+
+   // idを受けて、合致したレコードをjson文字列として返す。
+   // 返り値jsonをどうやってデシリアライズするかは呼び出し毎に定義。
+   public string SeachByID(string id)
+   {
+	string result = Null;
+
+        // postリクエストをコルーチンで呼び出し。
+        StartCoroutine(Utility.PostRequest(url , jsonData , (response) =>
+	{
+            Debug.Log($"Received message: {response}");
+	    result = response;
+        }));
+	
+	
+   }
+
+   // SearchConditionを受けて、合致したレコードをjson文字列として返す。
+   //public string SeachByCondition(SearchCondition condition)
+   //{
+   //}
+
+
+}
+
+
+
+// クラス定義
+class SearchCondition
+{
+   // public string id; 
+   // →idは不要で。id検索するときは他の検索条件は要らない。
+   public string name ;
+   public int? age ; // nullを許容するint型。
+   public string memo;
+
+// インスタンス化のときはこう。
+//var condition = new SearchCondition
+//{
+//    name = "Taro",
+//    age = null, // null OK
+//    memo = "test memo"
+//};
+
+}
+
+
+
