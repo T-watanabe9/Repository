@@ -8,29 +8,6 @@ class ModelCards(models.Model):
 class ModelRaces(models.Model):
 
 
-〇C#側でSearchConditionをシリアライズするときのコード案。
-
-
-using Newtonsoft.Json;
-
-// クラス定義
-class SearchCondition
-{
-   public string id;
-   public string name ;
-   public int? age ; // nullを許容するint型。
-   public string memo;
-}
-
-
-// インスタンス化
-var condition = new SearchCondition
-{
-    id = "123",
-    name = "Taro",
-    age = null, // null OK
-    memo = "test memo"
-};
 
 
 〇fastAPI。select_sqlの返り値を簡単に。
