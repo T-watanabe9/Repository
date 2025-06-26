@@ -20,22 +20,16 @@ async def get():
 
 
 # BuildSceneのリクエスト。
-# Build場面はすべてpostで良いと思う。
 # 検索条件(search_condition)を辞書型で受けて、connect.pyのselect関数に渡す。
 @app.post("/build/")
 async def post_build(request: Request , session = Depends(get_db)):
     search_condition = await request.json()
-    print(search_condition)
-    result = sql_select(session , **search_condition)
-    print(result)
-    if result is None:  # データがない場合
-        return None
+    print(f'Recieve Message : {search_condition}')
+    list_users = sql_select(session , **search_condition)
+    message = [user.__dict__ for user in list_users]
+    print(f'Send Message : {message}')
+    return message
     
-    elif isinstance(result, list):  # 複数データあり
-        return [user.__dict__ for user in result]
-    
-    else:  # 単一データ（.first() の戻り値）
-        return result.__dict__
 
 
 # RunSceneのリクエスト。
