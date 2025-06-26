@@ -1,117 +1,107 @@
-〇デッキリストの保存形式はcsvが良いんじゃねえか。流石に。だってカード名のリスト以上の情報は無いわけだし。
-→それか、json化しやすいようにjsonファイルとか。
-今日の目標
 
-日記
+〇Cardモデルの系統部分、ManyToManyfieldを使うのが良いと思う。
+以下、chat先生。↓
+https://chatgpt.com/c/6858d0a3-6560-800f-a3e2-acfc28696997
+
+class ModelCards(models.Model):
+
+class ModelRaces(models.Model):
 
 
 
-using Newtonsoft.Json;
 
-public class BuildManager1 : MonoBehaviour
+
+〇草案
+
+// Utility.cs でSeachByIDとSearchByConditionを作る。
+// SeachByIDはビルドシーンでもランシーンでもよく使うのでUtility。
+// でSearchByConditionもなんか役割似てるからUtilityで。
+// 以下のコードはちょっと良くないかも。
+// IEnumerator PostRequest：様々なシーンで利用するのでUtilityで定義。各シーンからStartCoroutine(Utiity.PostRequest())で各シーンから呼び出す、とかは？
+
+
+class Utility
 {
-    public static selectedDecimal;
-    public Transform selectButton;
-    public static List<DecList> decListList;
+
+   
+   public static IEnumerator PostRequest(string uri, 
+                                         string jsonData, 
+                                         Action<string> callback)
+   {
+        var request = new UnityWebRequest(uri, "POST");
+        byte[] bodyRaw 
+            = new System.Text.UTF8Encoding().GetBytes(jsonData);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        // もしも何かエラーがあれば
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        // もしもエラーが無ければ
+        else
+        {
+            // 呼び出したコルーチンにjson形式の文字列を返す。
+            callback?.Invoke(request.downloadHandler.text);
+        }
 
 
-    void Awake()
-    {
-        // →Utility.getDecListList() return List<DecList> とか？
-        dataPath = Path.Combine(Application.persistentDataPath, "userdata.json");
-        decListList = JsonConvert.DeserializeObject<List<TestData>>(json);
-    }
-
-    void Start()
-    {
-        selectButton = Instantiate(this.selectButton)
-        selectButton.gm = this.object;
-        selectButton.name
-
-
-    }
-    
+   } 
 }
 
 
-using System.IO;
-using UnityEngine;
-using Newtonsoft.Json;
-
-public class BuildManager2 : MonoBehaviour
+class BuildManager:MonoBehavior
 {
 
+   // idを受けて、合致したレコードをjson文字列として返す。
+   // 返り値jsonをどうやってデシリアライズするかは呼び出し毎に定義。
+   public string SeachByID(string id)
+   {
+	string result = Null;
+
+        // postリクエストをコルーチンで呼び出し。
+        StartCoroutine(Utility.PostRequest(url , jsonData , (response) =>
+	{
+            Debug.Log($"Received message: {response}");
+	    result = response;
+        }));
+	
+	
+   }
+
+   // SearchConditionを受けて、合致したレコードをjson文字列として返す。
+   //public string SeachByCondition(SearchCondition condition)
+   //{
+   //}
 
 
-    // データを保存する
-    public void SaveUserData(List<T> data)
-    {
-        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        File.WriteAllText(filePath, json);
-        Debug.Log($"保存しました: {filePath}");
-    }
-
-    // データを読み込む
-    public UserData LoadUserData()
-    {
-        if (!File.Exists(filePath))
-        {
-            Debug.LogWarning("保存データが存在しません。");
-            return null;
-        }
-
-        string json = File.ReadAllText(filePath);
-        UserData data = JsonConvert.DeserializeObject<UserData>(json);
-        Debug.Log("データを読み込みました。");
-        return data;
-    }
-
-    // テスト用（キー操作）
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            UserData data = new UserData { playerName = "Alice", level = 10, volume = 0.8f };
-            SaveUserData(data);
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            UserData data = LoadUserData();
-            if (data != null)
-            {
-                Debug.Log($"出力しました。");
-            }
-        }
-    }
 }
 
 
 
-// デシリアライズ用クラス。
-public class DecList
+// クラス定義
+class SearchCondition
 {
-    public String decID;
-    public String decName;
-    public Bool is_original;
-    public List<String> main;
-    public List<String> ex;
-    public String memo;
+   // public string id; 
+   // →idは不要で。id検索するときは他の検索条件は要らない。
+   public string name ;
+   public int? age ; // nullを許容するint型。
+   public string memo;
+
+// インスタンス化のときはこう。
+//var condition = new SearchCondition
+//{
+//    name = "Taro",
+//    age = null, // null OK
+//    memo = "test memo"
+//};
+
 }
 
 
 
-
-chat先生↓
-newtonsoft.jsonを用いて以下のjsonファイルをデシリアライズするクラスを定義できますか。
-
-test.json
-[
-
- {"title":"title1" , "main":"main1" , "memo":"memo1"},
-
- {"title":"title1" , "main":"main2" , "memo":"memo2"},
-
- {"title":"title1" , "main":"main3" , "memo":"memo3"}
-
-]
