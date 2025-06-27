@@ -22,7 +22,7 @@ class CardForm(forms.ModelForm):
 class CardAdmin(SortableAdminMixin, admin.ModelAdmin):
      form = CardForm
      list_display = ('get_prio', 'id' , 'name' , 'category' ,  'cost' , 'color' , 'priority', )
-    list_display_links = ('id',)  # idをリンクにする
+     list_display_links = ('id',)  # idをリンクにする
      search_fields = ('name', 'category' , 'effect_text',  'explain' )
      list_filter = ('category', 'cost' , 'color')
 
