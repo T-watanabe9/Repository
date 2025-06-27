@@ -10,7 +10,7 @@ class CardAdmin(SortableAdminMixin, admin.ModelAdmin):
      search_fields = ('name', 'category' , 'effect_text', 'race', 'explain' )
      list_filter = ('category', 'cost' , 'color')
      formfield_overrides = {
-         models.TextField: {'widget': Textarea(attrs={'rows': 5, 'cols': 60})},
+         models.TextField: {'widget': Textarea(attrs={'rows': 20, 'cols': 60})},
      }
 
 admin.site.register(Card , CardAdmin)
