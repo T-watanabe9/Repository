@@ -6,7 +6,7 @@ from adminsortable2.admin import SortableAdminMixin
 
 # Register your models here.
 class CardAdmin(SortableAdminMixin, admin.ModelAdmin):
-     list_display = ('id' , 'name' , 'category' ,  'cost' , 'color' , 'race' , 'prioriy')
+     list_display = ('id' , 'name' , 'category' ,  'cost' , 'color' , 'race' , 'priority')
      search_fields = ('name', 'category' , 'effect_text', 'race', 'explain' )
      list_filter = ('category', 'cost' , 'color')
      formfield_overrides = {
