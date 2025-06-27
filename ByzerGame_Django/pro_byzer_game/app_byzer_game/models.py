@@ -21,6 +21,11 @@ class Card(models.Model):
     symbol = models.CharField(max_length=10 ,blank=True, null=True)
     flavor_text = models.TextField(blank=True, null=True)
     explain = models.TextField(blank=True, null=True)
+    priority = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+    # 並べ替え用。
+    class Meta:
+        ordering = ['priority'] 
 
     def __str__(self):
         return f"{self.id}: {self.name}"

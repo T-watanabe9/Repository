@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app_byzer_game'
+    'app_byzer_game',
+    'adminsortable2',
 ]
 
 MIDDLEWARE = [
