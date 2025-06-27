@@ -16,7 +16,7 @@ class Card(models.Model):
     cost = models.IntegerField()
     reduction_symbol = models.CharField(max_length=10, blank=True, null=True)
     color = models.CharField(max_length=10)
-    race =  models.CharField(max_length=20, blank=True, null=True)
+    
     effect_text = models.TextField(blank=True, null=True)
     symbol = models.CharField(max_length=10 ,blank=True, null=True)
     flavor_text = models.TextField(blank=True, null=True)

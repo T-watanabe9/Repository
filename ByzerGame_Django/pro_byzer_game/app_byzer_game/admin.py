@@ -21,8 +21,8 @@ class CardForm(forms.ModelForm):
 
 class CardAdmin(SortableAdminMixin, admin.ModelAdmin):
      form = CardForm
-     list_display = ('id' , 'name' , 'category' ,  'cost' , 'color' , 'race' , 'priority')
-     search_fields = ('name', 'category' , 'effect_text', 'race', 'explain' )
+     list_display = ('id' , 'name' , 'category' ,  'cost' , 'color' , 'priority')
+     search_fields = ('name', 'category' , 'effect_text',  'explain' )
      list_filter = ('category', 'cost' , 'color')
      
 
