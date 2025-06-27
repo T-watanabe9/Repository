@@ -12,9 +12,14 @@ class CardAdmin(admin.ModelAdmin):
      # TextField の見た目を改善
      formfield_overrides = {
           models.TextField: {
-              'widget': Textarea(attrs={'rows': 5, 'cols': 60})
+              'widget': Textarea(attrs={'rows': 20 , 'cols': 60})
                },
      }
+
+     class Media:
+        css = {
+            'all': ('app_byzer_game/admin_custom.css',)
+        }
 
 
 admin.site.register(Card , CardAdmin)

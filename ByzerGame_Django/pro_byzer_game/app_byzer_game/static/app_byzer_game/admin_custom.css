@@ -1,0 +1,7 @@
+textarea {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  min-height: 200px !important; /* 必要に応じて調整 */
+  box-sizing: border-box;
+} 
