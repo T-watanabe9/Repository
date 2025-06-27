@@ -29,7 +29,7 @@ class Card(models.Model):
     symbol = models.CharField(max_length=10 ,blank=True, null=True)
     flavor_text = models.TextField(blank=True, null=True)
     explain = models.TextField(blank=True, null=True)
-    priority = models.PositiveIntegerField(default=0, editable=False, db_index=True, verbose_name="move")
+    priority = models.PositiveIntegerField(default=0, db_index=True, verbose_name="move")
 
     # 並べ替え用。
     class Meta:
