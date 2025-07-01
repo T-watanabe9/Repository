@@ -25,7 +25,10 @@ class Card(models.Model):
     cost = models.IntegerField()
     reduction_symbol = models.CharField(max_length=10, blank=True, null=True)
     color = models.CharField(max_length=10)
-    race = models.ManyToManyField(Race, blank=True, related_name='races')
+    #race = models.ManyToManyField(Race, blank=True, related_name='races')
+    race1 = models.ForeignKey('Race', on_delete=models.SET_NULL, blank=True, null=True, related_name='race1_cards')
+    race2 = models.ForeignKey('Race', on_delete=models.SET_NULL, blank=True, null=True, related_name='race2_cards')
+    race3 = models.ForeignKey('Race', on_delete=models.SET_NULL, blank=True, null=True, related_name='race3_cards')
     effect_text = models.TextField(blank=True, null=True)
     symbol = models.CharField(max_length=10 ,blank=True, null=True)
     flavor_text = models.TextField(blank=True, null=True)
@@ -42,6 +45,14 @@ class Card(models.Model):
     @admin.display(description='priority')
     def get_prio(self):
         return self.priority
+    
+    # 系統を表示するためのメソッド
+    @admin.display(description='系統')
+    def get_race(self):
+        str1 = str(self.race1) if self.race1 else ''
+        str2 = ('・' + str(self.race2)) if self.race2 else ''
+        str3 = ('・' + str(self.race3)) if self.race3 else ''
+        return str1 + str2 + str3
     
     # IDを自動で設定するためのメソッド
     def save(self, *args, **kwargs):

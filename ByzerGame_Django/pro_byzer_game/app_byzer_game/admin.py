@@ -8,10 +8,12 @@ from django.utils.html import format_html
 from .models import Card, Race
 from adminsortable2.admin import SortableAdminMixin
 from django.shortcuts import redirect, get_object_or_404
+from django.contrib.admin import SimpleListFilter
 
 # Register your models here.
 
-# カスタムフォームの定義
+# カスタムフォームクラス。
+# 新規作成＆編集時のtextAreaを広くする。
 class CardForm(forms.ModelForm):
     class Meta:
         model = Card
@@ -22,13 +24,33 @@ class CardForm(forms.ModelForm):
                 'rows': 20,  # rowsはstyleではなく属性として指定
             }),
         }
+
+# カスタムフィルタークラス。
+class AnyRaceFilter(SimpleListFilter):
+    title = 'いずれかの系統 (race1〜3)'
+    parameter_name = 'any_race'
+
+    def lookups(self, request, model_admin):
+        races = Race.objects.all()
+        return [(race.id, race.name) for race in races]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(
+                models.Q(race1__id=self.value()) |
+                models.Q(race2__id=self.value()) |
+                models.Q(race3__id=self.value())
+            )
+        return queryset
+    
 # カードモデルのAdminサイト
+@admin.register(Card)
 class CardAdmin(SortableAdminMixin, admin.ModelAdmin):
      form = CardForm
-     list_display = ('get_prio', 'id' , 'name' , 'category' , 'priority', )
+     list_display = ('get_prio', 'id' , 'name' , 'get_race' , 'priority', )
      list_display_links = ('id',)  # idをリンクにする
      search_fields = ('name', 'category', 'effect_text',  'explain' )
-     list_filter = ('category', 'cost' , 'color')
+     list_filter = ('category', 'cost' , 'color',  AnyRaceFilter)
      actions = ['add_da_yo_to_name']
 
      @admin.action(description='選択したカードの名前を「名前+だよ。」に変更')
@@ -45,7 +67,6 @@ class CardAdmin(SortableAdminMixin, admin.ModelAdmin):
              messages.SUCCESS
          )
 
-admin.site.register(Card , CardAdmin)
 
 
 
