@@ -12,14 +12,14 @@ class Race(models.Model):
 
 class Card(models.Model):
 
-    id = models.CharField(primary_key=True, max_length=10)
+    id = models.CharField(primary_key=True, max_length=10, editable=False)
     name = models.CharField(max_length=100)
     CATEGORY_CHOICES = [
-        ('spirit', 'スピリット'),
-        ('ultimate', 'アルティメット'),
-        ('brave', 'ブレイヴ'),
-        ('nexus', 'ネクサス'),
-        ('magic', 'マジック'),
+        ('スピリット', 'スピリット'),
+        ('アルティメット', 'アルティメット'),
+        ('ブレイヴ', 'ブレイヴ'),
+        ('ネクサス', 'ネクサス'),
+        ('マジック', 'マジック'),
     ]
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
     cost = models.IntegerField()
@@ -43,11 +43,49 @@ class Card(models.Model):
     def get_prio(self):
         return self.priority
     
-    # priorityを自動で設定するためのメソッド
+    # IDを自動で設定するためのメソッド
     def save(self, *args, **kwargs):
-        if not self.priority:
-            #max_priority = self.__class__.objects.aggregate(models.Max('priority'))['priority__max']
-            self.priority = 10
+        if not self.id:
+
+            # 色の判別
+            if self.color == '赤紫緑白黄青':
+                id_initial = 'S'
+            elif self.color[0] == '赤':
+                id_initial = 'R'
+            elif self.color[0] == '紫':
+                id_initial = 'P'
+            elif self.color[0] == '緑':
+                id_initial = 'G'
+            elif self.color[0] == '白':
+                id_initial = 'W'
+            elif self.color[0] == '黄':
+                id_initial = 'Y'
+            elif self.color[0] == '青':
+                id_initial = 'B'
+
+            # カテゴリの判別
+            if self.category == 'スピリット':
+                id_initial += 'S'
+            elif self.category == 'アルティメット':
+                id_initial += 'U'
+            elif self.category == 'ブレイヴ':
+                id_initial += 'B'
+            elif self.category == 'ネクサス':
+                id_initial += 'N'
+            elif self.category == 'マジック':
+                id_initial += 'M'
+
+            # コストの2桁表現を追加
+            id_initial += f'{self.cost:02d}'
+
+            # 末尾3桁の連番を探す
+            count = 1
+            while True:
+                id_candidate = id_initial + f"{count:03d}"  
+                if Card.objects.filter(id=id_candidate).exists():
+                    count += 1
+                else:
+                    self.id = id_candidate
+                    break
         super().save(*args, **kwargs)
-    
     
