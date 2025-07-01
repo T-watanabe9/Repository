@@ -26,6 +26,7 @@ class CardForm(forms.ModelForm):
 class CardAdmin(SortableAdminMixin, admin.ModelAdmin):
      form = CardForm
      list_display = ('get_prio', 'id' , 'name' , 'category' ,  'cost' , 'color' , 'priority', )
+     list_display_links = ('id',)  # idをリンクにする
      search_fields = ('name', 'category' , 'effect_text',  'explain' )
      list_filter = ('category', 'cost' , 'color')
      actions = ['add_da_yo_to_name']
@@ -48,6 +49,7 @@ admin.site.register(Card , CardAdmin)
 
 
 
+<<<<<<< HEAD
 # 表示順を変える機能を実装するため、いろいろやってみていた。
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
@@ -90,3 +92,4 @@ class RaceAdmin(admin.ModelAdmin):
     #     obj.order += 1
     #     obj.save()
     #     return JsonResponse({'success': True, 'new_order': obj.order})
+
