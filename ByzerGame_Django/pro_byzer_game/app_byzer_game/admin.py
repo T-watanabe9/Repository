@@ -27,7 +27,7 @@ class CardAdmin(SortableAdminMixin, admin.ModelAdmin):
      form = CardForm
      list_display = ('get_prio', 'id' , 'name' , 'category' ,  'cost' , 'color' , 'priority', )
      list_display_links = ('id',)  # idをリンクにする
-     search_fields = ('name', 'category','race', 'effect_text',  'explain' )
+     search_fields = ('name', 'category','races', 'effect_text',  'explain' )
      list_filter = ('category', 'cost' , 'color')
      actions = ['add_da_yo_to_name']
 
