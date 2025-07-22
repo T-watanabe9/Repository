@@ -7,10 +7,13 @@ curl.exe -X POST http://localhost:8080/build/ -H "Content-Type: application/json
 '''
 
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request, Depends
+from fastapi import FastAPI, Request, Depends
 from connect import get_db, sql_select, select_by_deckrecipe
+from battle_scene.endpoint import router 
 
 app = FastAPI()
+
+app.include_router(router)
 
 
 # getリクエストは本番じゃほぼ使わないがテスト用として。
@@ -47,14 +50,3 @@ async def post_build(request: Request, session = Depends(get_db)):
     return message
 
 
-# RunSceneのリクエスト。
-# Run場面はすべてwssが良いチャットっぽいので。
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    try:
-        while True:
-            data = await websocket.receive_text()
-            await websocket.send_text(f"Echo: {data}")
-    except WebSocketDisconnect:
-        print("Client disconnected")

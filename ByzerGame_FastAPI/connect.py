@@ -53,6 +53,23 @@ class CardDB(Base):
     symbol = Column(String)
     flavor_text = Column(String)
 
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "category": self.category,
+            "cost": self.cost,
+            "reduction_symbol": self.reduction_symbol,
+            "color": self.color,
+            "race1": self.race1.name if self.race1 else None,
+            "race2": self.race2.name if self.race2 else None,
+            "race3": self.race3.name if self.race3 else None,
+            "effect_text": self.effect_text,
+            "symbol": self.symbol,
+            "flavor_text": self.flavor_text,
+        }
+
     def __repr__(self):
         return self.name
     
@@ -78,7 +95,7 @@ def select_by_deckrecipe(session: Session, **recipe):
         for cardID in list_main : 
             # print(cardID)
             query = session.query(CardDB).filter(CardDB.id == cardID)
-            result["main"].append(query.first().__dict__)
+            result["main"].append(query.first().to_dict())
 
     # exリストが存在すれば実行。
     list_ex = recipe.get('ex')
@@ -87,7 +104,7 @@ def select_by_deckrecipe(session: Session, **recipe):
         for cardID in list_ex : 
             # print(cardID)
             query = session.query(CardDB).filter(CardDB.id == cardID)
-            result["ex"].append(query.first().__dict__)
+            result["ex"].append(query.first().to_dict())
 
     return result
 
