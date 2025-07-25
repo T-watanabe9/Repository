@@ -14,8 +14,9 @@ method_dict = {
     }
 
 # BattleSceneのリクエスト。
-@router.websocket("/fastapi/ws")
+@router.websocket("/fastapi/battle/")
 async def battle_test(websocket: WebSocket):
+    print('aa')
     await websocket.accept()
     try:
         while True:
