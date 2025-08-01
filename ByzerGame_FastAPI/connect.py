@@ -109,4 +109,6 @@ def select_by_deckrecipe(session: Session, **recipe):
     return result
 
 
-
+def sql_select(request , **dic):
+    result = []
+    return result
