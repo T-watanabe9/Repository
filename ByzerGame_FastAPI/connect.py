@@ -110,34 +110,3 @@ def select_by_deckrecipe(session: Session, **recipe):
 
 
 
-
-# # SQLセレクト文を成形,実施する関数。
-# # テーブル定義のうち、raceを書き直したので、そこは修正。
-# def sql_select(session: Session, **conditions) -> list[CardDB]:
-    
-    # # クエリの宣言。
-    # query = session.query(CardDB)
-
-    # # 引数として受けた検索条件がidを含んでいれば、idと合致するレコードを探索しreturn。
-    # if (id:= conditions.get('id')):
-    #     query = query.filter(CardDB.id == id)
-    #     # 検索結果の取得。
-    #     result = query.all() # 検索結果の件数に関わらずリスト型を返して欲しいので.all()とした。
-    #     return result        # もし0件の場合は[]が返る。
-
-
-    # # 検索条件がidを含んでない場合、その他の検索条件で順番に絞り込み。
-
-    # if (ward := conditions.get('searchText')):
-    #     query = query.filter(or_(
-    #                          CardDB.name.like(f"%{ward}%"),
-    #                          CardDB.race.like(f"%{ward}%"),
-    #                          CardDB.effect_text.like(f"%{ward}%"),
-    #                          ))
-
-
-    # # query.all()やquery.first()で初めてRDBMSに問い合わせが入る。
-    # return query.order_by(CardDB.cost).all()
-    
-    # return []
-
