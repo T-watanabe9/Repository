@@ -113,7 +113,7 @@ def select_by_deckrecipe(session: Session, **recipe):
 
 # # SQLセレクト文を成形,実施する関数。
 # # テーブル定義のうち、raceを書き直したので、そこは修正。
-def sql_select(session: Session, **conditions) -> list[CardDB]:
+# def sql_select(session: Session, **conditions) -> list[CardDB]:
     
     # # クエリの宣言。
     # query = session.query(CardDB)
@@ -139,5 +139,5 @@ def sql_select(session: Session, **conditions) -> list[CardDB]:
     # # query.all()やquery.first()で初めてRDBMSに問い合わせが入る。
     # return query.order_by(CardDB.cost).all()
     
-    return []
+    # return []
 
