@@ -25,15 +25,19 @@ class Card(models.Model):
     cost = models.IntegerField()
     reduction_symbol = models.CharField(max_length=10, blank=True, null=True)
     color = models.CharField(max_length=10)
-    #race = models.ManyToManyField(Race, blank=True, related_name='races')
     race1 = models.ForeignKey('Race', on_delete=models.SET_NULL, blank=True, null=True, related_name='race1_cards')
     race2 = models.ForeignKey('Race', on_delete=models.SET_NULL, blank=True, null=True, related_name='race2_cards')
     race3 = models.ForeignKey('Race', on_delete=models.SET_NULL, blank=True, null=True, related_name='race3_cards')
     effect_text = models.TextField(blank=True, null=True)
     symbol = models.CharField(max_length=10 ,blank=True, null=True)
+    EXPANSION_CHOICES = [
+        ('1st' , '1st'),
+        ('2nd' , '2nd'),
+    ]
+    expansion = models.CharField(max_length=10, choices=EXPANSION_CHOICES, blank=True, null=True)
     flavor_text = models.TextField(blank=True, null=True)
     explain = models.TextField(blank=True, null=True)
-    priority = models.PositiveIntegerField(db_index=True, verbose_name="move")
+    priority = models.PositiveIntegerField(db_index=True, editable=False)  # verbose_name="move"
 
     # 並べ替え用。
     class Meta:
@@ -54,10 +58,11 @@ class Card(models.Model):
         str3 = ('・' + str(self.race3)) if self.race3 else ''
         return str1 + str2 + str3
     
-    # IDを自動で設定するためのメソッド
+    # 保存時のメソッド。
     def save(self, *args, **kwargs):
-        if not self.id:
 
+        # IDを自動で設定。
+        if not self.id:
             # 色の判別
             if self.color == '赤紫緑白黄青':
                 id_initial = 'S'
@@ -98,5 +103,10 @@ class Card(models.Model):
                 else:
                     self.id = id_candidate
                     break
+        
+        # 表示優先度を自動で設定。
+        if not self.priority:
+            self.priority = 1
+
         super().save(*args, **kwargs)
     
