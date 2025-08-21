@@ -79,6 +79,7 @@ from django.http import JsonResponse
 @admin.register(Race)
 class RaceAdmin(admin.ModelAdmin):
     list_display = ('name','order', )
+    ordering = ('order',)
     # list_display = ('name', 'increment_button')
 
     # @admin.display(description='順序を+1')
