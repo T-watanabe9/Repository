@@ -37,18 +37,18 @@ class Card(models.Model):
     expansion = models.CharField(max_length=10, choices=EXPANSION_CHOICES, blank=True, null=True)
     flavor_text = models.TextField(blank=True, null=True)
     explain = models.TextField(blank=True, null=True)
-    priority = models.PositiveIntegerField(db_index=True, editable=False)  # verbose_name="move"
+    priority = models.PositiveIntegerField(db_index=True, blank=True, null=True) 
 
-    # 並べ替え用。
-    class Meta:
-        ordering = ['priority'] 
-    def __str__(self):
-        return f"{self.id}: {self.name}"
+    # # 並べ替え用。
+    # class Meta:
+    #     ordering = ['priority'] 
+    # def __str__(self):
+    #     return f"{self.id}: {self.name}"
     
-    # priorityを表示するためのメソッド
-    @admin.display(description='priority')
-    def get_prio(self):
-        return self.priority
+    # # priorityを表示するためのメソッド
+    # @admin.display(description='priority')
+    # def get_prio(self):
+    #     return self.priority
     
     # 系統を表示するためのメソッド
     @admin.display(description='系統')
@@ -61,38 +61,51 @@ class Card(models.Model):
     # 保存時のメソッド。
     def save(self, *args, **kwargs):
 
-        # IDを自動で設定。
-        if not self.id:
+        # IDと表示優先度を自動で設定。
+        if not self.id and not self.priority:
             # 色の判別
             if self.color == '赤紫緑白黄青':
                 id_initial = 'S'
+                pri_initial = '7'
             elif self.color[0] == '赤':
                 id_initial = 'R'
+                pri_initial = '1'
             elif self.color[0] == '紫':
                 id_initial = 'P'
+                pri_initial = '2'
             elif self.color[0] == '緑':
                 id_initial = 'G'
+                pri_initial = '3'
             elif self.color[0] == '白':
                 id_initial = 'W'
+                pri_initial = '4'
             elif self.color[0] == '黄':
                 id_initial = 'Y'
+                pri_initial = '5'
             elif self.color[0] == '青':
                 id_initial = 'B'
+                pri_initial = '6'
 
             # カテゴリの判別
             if self.category == 'スピリット':
                 id_initial += 'S'
+                pri_initial += '1'
             elif self.category == 'アルティメット':
                 id_initial += 'U'
+                pri_initial += '2'
             elif self.category == 'ブレイヴ':
                 id_initial += 'B'
+                pri_initial += '3'
             elif self.category == 'ネクサス':
                 id_initial += 'N'
+                pri_initial += '4'
             elif self.category == 'マジック':
                 id_initial += 'M'
+                pri_initial += '5'
 
             # コストの2桁表現を追加
             id_initial += f'{self.cost:02d}'
+            pri_initial += f'{self.cost:02d}'
 
             # 末尾3桁の連番を探す
             count = 1
@@ -102,11 +115,8 @@ class Card(models.Model):
                     count += 1
                 else:
                     self.id = id_candidate
+                    self.priority = int(pri_initial + f"{count:03d}")  
                     break
-        
-        # 表示優先度を自動で設定。
-        if not self.priority:
-            self.priority = 1
 
         super().save(*args, **kwargs)
     
