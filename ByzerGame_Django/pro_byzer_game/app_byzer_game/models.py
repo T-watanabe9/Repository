@@ -38,17 +38,6 @@ class Card(models.Model):
     flavor_text = models.TextField(blank=True, null=True)
     explain = models.TextField(blank=True, null=True)
     priority = models.PositiveIntegerField(db_index=True, blank=True, null=True) 
-
-    # # 並べ替え用。
-    # class Meta:
-    #     ordering = ['priority'] 
-    # def __str__(self):
-    #     return f"{self.id}: {self.name}"
-    
-    # # priorityを表示するためのメソッド
-    # @admin.display(description='priority')
-    # def get_prio(self):
-    #     return self.priority
     
     # 系統を表示するためのメソッド
     @admin.display(description='系統')

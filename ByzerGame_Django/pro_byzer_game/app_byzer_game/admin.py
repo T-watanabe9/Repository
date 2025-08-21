@@ -80,40 +80,36 @@ from django.http import JsonResponse
 class RaceAdmin(admin.ModelAdmin):
     list_display = ('name','order', )
     ordering = ('order',)
-    # list_display = ('name', 'increment_button')
 
-    # @admin.display(description='順序を+1')
-    # def increment_button(self, obj):
-    #     url = reverse('admin:increment_order', args=[obj.pk])
-    #     return format_html(
-    #     '''
-    #     <form method="post" action="{}" style="display:inline;">
-    #         <input type="hidden" name="csrfmiddlewaretoken" value="{}" />
-    #         <input type="hidden" name="id" value="{}" />
-    #         <button type="submit" class="button">+1</button>
-    #     </form>
-    #     ''',
-    #     reverse('admin:race_increment_order'),
-    #     '{{ csrf_token }}',  # JavaScript経由の場合はJSで埋め込む、後述
-    #     obj.pk)
+    @admin.action(description='選択したカードの表示順を+1')
+    def order_up(self, request, queryset):
+        count = 0
+        for race in queryset:
+            race.order += 1
+            race.save()
+            count += 1
+        
+        self.message_user(
+            request, 
+            f"{count}件のraceの優先順位を+1しました。", 
+            messages.SUCCESS
+        )
+
     
-    # def get_urls(self):
-    #     urls = super().get_urls()
-    #     custom_urls = [
-    #         path(
-    #             'increment_order/<int:pk>/',
-    #             self.admin_site.admin_view(self.increment_order_view),
-    #             name='increment_order',
-    #         ),
-    #     ]
-    #     return custom_urls + urls
+    @admin.action(description='選択したカードの表示順を+1')
+    def order_down(self, request, queryset):
+        count = 0
+        for race in queryset:
+            race.order -= 1
+            race.save()
+            count += 1
+        
+        self.message_user(
+            request, 
+            f"{count}件のraceの優先順位を-1しました。", 
+            messages.SUCCESS
+        )
+
     
 
-    # @require_POST
-    # def increment_order_view(self, request):
-    #     pk = request.POST.get("id")
-    #     obj = get_object_or_404(Race, pk=pk)
-    #     obj.order += 1
-    #     obj.save()
-    #     return JsonResponse({'success': True, 'new_order': obj.order})
 
