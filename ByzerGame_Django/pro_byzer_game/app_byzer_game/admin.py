@@ -80,6 +80,8 @@ from django.http import JsonResponse
 class RaceAdmin(admin.ModelAdmin):
     list_display = ('name','order', )
     ordering = ('order',)
+    actions = ['order_up' , 'order_down']
+
 
     @admin.action(description='選択したカードの表示順を+1')
     def order_up(self, request, queryset):
