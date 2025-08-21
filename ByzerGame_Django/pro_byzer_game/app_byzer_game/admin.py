@@ -48,7 +48,7 @@ class AnyRaceFilter(SimpleListFilter):
 class CardAdmin(admin.ModelAdmin): # SortableAdminMixin, 
      form = CardForm
      # list_display = ('get_prio', 'id' , 'name' , 'get_race' , 'priority', )
-     list_display = ('id' , 'name' , 'get_race' , 'priority')
+     list_display = ('id' , 'name' , 'get_race' , 'expansion', 'priority')
      list_display_links = ('id',)  # idをリンクにする
      search_fields = ('name', 'category', 'effect_text',  'explain' )
      list_filter = ('category', 'cost' , 'color',  AnyRaceFilter , 'expansion')
