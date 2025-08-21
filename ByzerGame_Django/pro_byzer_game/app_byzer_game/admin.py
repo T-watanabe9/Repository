@@ -98,17 +98,17 @@ class RaceAdmin(admin.ModelAdmin):
         )
 
     
-    @admin.action(description='選択したカードの表示順を+1')
+    @admin.action(description='選択したカードの表示順を+5')
     def order_down(self, request, queryset):
         count = 0
         for race in queryset:
-            race.order -= 1
+            race.order += 5
             race.save()
             count += 1
         
         self.message_user(
             request, 
-            f"{count}件のraceの優先順位を-1しました。", 
+            f"{count}件のraceの優先順位を+5しました。", 
             messages.SUCCESS
         )
 
