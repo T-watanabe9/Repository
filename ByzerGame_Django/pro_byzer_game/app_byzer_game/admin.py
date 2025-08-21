@@ -52,6 +52,7 @@ class CardAdmin(admin.ModelAdmin): # SortableAdminMixin,
      list_display_links = ('id',)  # idをリンクにする
      search_fields = ('name', 'category', 'effect_text',  'explain' )
      list_filter = ('category', 'cost' , 'color',  AnyRaceFilter , 'expansion')
+     ordering = ('priority',)
      actions = ['add_da_yo_to_name']
 
      @admin.action(description='選択したカードの名前を「名前+だよ。」に変更')
